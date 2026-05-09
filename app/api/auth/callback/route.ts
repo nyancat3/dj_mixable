@@ -6,11 +6,10 @@ export async function GET(request: NextRequest) {
   const state = searchParams.get("state");
   const error = searchParams.get("error");
 
-  // Use Host header to build URLs — Next.js normalizes request.url hostname,
-  // which can cause localhost/127.0.0.1 mismatches and break cookies
-  const host = request.headers.get("host") || "localhost:3000";
-  const protocol = request.headers.get("x-forwarded-proto") || "http";
-  const origin = `${protocol}://${host}`;
+  // Derive origin from the configured redirect URI so redirects always point
+  // to a trusted host (avoids open-redirect via spoofed Host header).
+  const redirectUri = process.env.SPOTIFY_REDIRECT_URI || "http://127.0.0.1:3000/api/auth/callback";
+  const origin = new URL(redirectUri).origin;
 
   const storedState = request.cookies.get("spotify_auth_state")?.value;
 
@@ -28,7 +27,6 @@ export async function GET(request: NextRequest) {
 
   const clientId = process.env.SPOTIFY_CLIENT_ID!;
   const clientSecret = process.env.SPOTIFY_CLIENT_SECRET!;
-  const redirectUri = process.env.SPOTIFY_REDIRECT_URI || "http://127.0.0.1:3000/api/auth/callback";
 
   // Exchange code for tokens
   const tokenRes = await fetch("https://accounts.spotify.com/api/token", {
