@@ -2,6 +2,9 @@
 
 A web app for DJs to find smooth transitions between tracks. Load a Spotify playlist, optionally import your Rekordbox library for accurate BPM/key data, then tap any track to instantly see which others are compatible based on **BPM (±6%)** and **Camelot key** compatibility.
 
+![DJ Mixable screenshot](docs/screenshot.png)
+*Album artwork is shown in the actual app — omitted here for copyright reasons.*
+
 ## Features
 
 - **Spotify playlist loading** — paste any Spotify playlist URL to pull in tracks with metadata
